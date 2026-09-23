@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+{% block title %}{{ tenant.brand }} - Console{% endblock %}
+{% block content %}
+{#
+  The frame shell. Two iframes, and the member pane nests a third inside the main
+  one, giving a three-level frame tree.
+
+  This is why every locator in an artifact carries a frame path. A locator without
+  one is ambiguous the moment a surface has frames, and legacy surfaces always do.
+#}
+<div class="{{ cls(tenant.class_prefix, 'hdr') }}">{{ tenant.brand }} &mdash; Member Servicing</div>
+
+<table class="{{ cls(tenant.class_prefix, 'shell') }}" cellpadding="0" cellspacing="4" border="0" width="100%">
+  <tr valign="top">
+    <td width="168">
+      <iframe name="navframe" title="Navigation" src="{{ nav_src }}"
+              width="160" height="420" scrolling="auto"></iframe>
+    </td>
+    <td>
+      <iframe name="mainframe" title="Work Area" src="{{ main_src }}"
+              width="100%" height="420" scrolling="auto"></iframe>
+    </td>
+  </tr>
+</table>
+{% endblock %}

@@ -1,0 +1,19 @@
+{#
+  Layout-table nesting helpers.
+
+  Legacy consoles wrap content in several layers of layout tables that carry no
+  semantics. Depth is per-tenant (``extra_table_nesting``), which is how the two
+  tenants come to have different DOM paths for identical controls -- the exact
+  drift that makes rung 4 of the locator ladder unreliable and rung 1 stable.
+#}
+{% macro open(tenant, seed, base=2) -%}
+  {%- for i in range(base + tenant.extra_table_nesting) -%}
+    <table class="{{ cls(tenant.class_prefix, seed ~ 'w' ~ i) }}" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td>
+  {%- endfor -%}
+{%- endmacro %}
+
+{% macro close(tenant, base=2) -%}
+  {%- for i in range(base + tenant.extra_table_nesting) -%}
+    </td></tr></table>
+  {%- endfor -%}
+{%- endmacro %}

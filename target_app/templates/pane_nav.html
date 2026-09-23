@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% block title %}Navigation{% endblock %}
+{% block content %}
+<div class="{{ cls(tenant.class_prefix, 'navwrap') }}">
+  <table class="{{ cls(tenant.class_prefix, 'navtbl') }}" cellpadding="4" cellspacing="0" border="0" width="100%">
+    <tr><td class="{{ cls(tenant.class_prefix, 'hdr') }}">Functions</td></tr>
+    <tr>
+      <td>
+        <a href="{{ url_for('pane_search', tenant=tenant.tenant_id) }}" target="mainframe">{{ tenant.label_search }}</a>
+      </td>
+    </tr>
+    <tr><td><a href="#" onclick="return false">Daily Batch Review</a></td></tr>
+    <tr><td><a href="#" onclick="return false">Fee Reversal Queue</a></td></tr>
+    <tr><td><a href="#" onclick="return false">Card Services</a></td></tr>
+    <tr>
+      <td><a href="{{ url_for('login', tenant=tenant.tenant_id) }}" target="_top">Sign Out</a></td>
+    </tr>
+  </table>
+</div>
+{% endblock %}

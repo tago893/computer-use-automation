@@ -1,0 +1,31 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}Confirmation{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'cf') }}
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlConfirm">
+    <h1 style="font-size:12px;margin:0 0 8px">Transfer Authorized</h1>
+
+    {#
+      The terminal success state. ``data-outcome`` plus the visible reference give
+      replay a checkpoint it can assert on, and give the artifact a typed output to
+      hand back to its caller.
+    #}
+    <div class="{{ cls(tenant.class_prefix, 'note') }}" role="status" data-outcome="CONFIRMED">
+      <strong>Authorized.</strong> Reference <code>{{ reference }}</code>.
+    </div>
+
+    <table class="{{ cls(tenant.class_prefix, 'grid') }}" cellpadding="0" cellspacing="0" border="0"
+           summary="Confirmation detail">
+      <tr><th scope="row">Reference</th><td>{{ reference }}</td></tr>
+      <tr><th scope="row">Member</th><td>{{ member.member_id }}</td></tr>
+      <tr><th scope="row">Account</th><td>{{ account.account_id }}</td></tr>
+      <tr><th scope="row">Product</th><td>{{ account.kind }}</td></tr>
+    </table>
+
+    <p style="margin-top:10px">
+      <a href="{{ url_for('pane_search', tenant=tenant.tenant_id) }}">Return to {{ tenant.label_search }}</a>
+    </p>
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}

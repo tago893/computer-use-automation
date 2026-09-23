@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}Member {{ member.member_id }}{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'mb') }}
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlMember">
+    <h1 style="font-size:12px;margin:0 0 8px">Member Record</h1>
+
+    <table class="{{ cls(tenant.class_prefix, 'grid') }}" cellpadding="0" cellspacing="0" border="0"
+           summary="Member demographic detail">
+      <tr>
+        <th scope="row">{{ tenant.label_member_id }}</th><td>{{ member.member_id }}</td>
+        <th scope="row">Name</th><td>{{ member.full_name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Joined</th><td>{{ member.joined }}</td>
+        <th scope="row">Standing</th><td>{{ member.standing }}</td>
+      </tr>
+      <tr>
+        <th scope="row">City</th><td>{{ member.city }}</td>
+        <th scope="row">State</th><td>{{ member.state }}</td>
+      </tr>
+    </table>
+
+    {#
+      Third frame level. The sub-account grid the agent must act inside lives in
+      an iframe nested within the main iframe, so its locators carry a two-hop
+      frame path.
+    #}
+    <p style="margin:10px 0 4px"><strong>Linked Products</strong></p>
+    <iframe name="detailframe" title="Linked Products" src="{{ sub_src }}"
+            width="100%" height="190" scrolling="auto"></iframe>
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}

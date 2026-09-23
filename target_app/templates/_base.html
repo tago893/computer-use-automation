@@ -1,0 +1,50 @@
+{#
+  Shared chrome for every page and pane.
+
+  The styling is deliberately period-accurate: table layout, Verdana, 11px, inline
+  borders. It is not decoration -- a screenshot-driven agent would find this
+  surface genuinely hard to read, which is part of the argument for perceiving via
+  the accessibility tree instead.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{{ tenant.brand }}{% endblock %}</title>
+  <style>
+    body { font: 11px Verdana, Geneva, sans-serif; margin: 0; background: #d9d9d9; color: #111; }
+    a { color: {{ tenant.accent }}; }
+    table { border-collapse: separate; }
+    .{{ cls(tenant.class_prefix, 'hdr') }} {
+      background: {{ tenant.accent }}; color: #fff; padding: 6px 9px;
+      font-weight: bold; letter-spacing: .3px;
+    }
+    .{{ cls(tenant.class_prefix, 'panel') }} {
+      background: #f2f2f2; border: 1px solid #9a9a9a; padding: 9px; margin: 6px;
+    }
+    .{{ cls(tenant.class_prefix, 'grid') }} th {
+      background: #c8c8c8; border: 1px solid #8a8a8a; padding: 3px 6px; text-align: left;
+    }
+    .{{ cls(tenant.class_prefix, 'grid') }} td {
+      background: #fff; border: 1px solid #b4b4b4; padding: 3px 6px;
+    }
+    .{{ cls(tenant.class_prefix, 'err') }} {
+      background: #ffe9e9; border: 1px solid #c00; padding: 6px; margin: 6px 0; color: #900;
+    }
+    .{{ cls(tenant.class_prefix, 'note') }} {
+      background: #fffbe6; border: 1px solid #c9a227; padding: 6px; margin: 6px 0;
+    }
+    input[type=text], input[type=password] {
+      font: 11px Verdana, sans-serif; border: 1px solid #7a7a7a; padding: 2px 3px;
+    }
+    button, input[type=submit] {
+      font: 11px Verdana, sans-serif; padding: 2px 10px; border: 1px solid #6a6a6a;
+      background: linear-gradient(#fafafa, #d6d6d6); cursor: pointer;
+    }
+    iframe { border: 1px solid #9a9a9a; background: #fff; }
+  </style>
+</head>
+<body class="{{ cls(tenant.class_prefix, 'body') }}">
+{% block content %}{% endblock %}
+</body>
+</html>

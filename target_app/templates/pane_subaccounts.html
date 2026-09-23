@@ -1,0 +1,47 @@
+{% extends "_base.html" %}
+{% block title %}Linked Products{% endblock %}
+{% block content %}
+{#
+  Innermost frame, and the interesting case for locators.
+
+  Every row's action link has the same role and the same *visible text*. They are
+  told apart only by ``aria-label``, which carries the account id. So:
+
+  * rung 1 (role + accessible name) is unique, because the ARIA is correct;
+  * a text-based rung is ambiguous across rows and must be refused rather than
+    silently resolved to the first match -- acting on the wrong row is the failure
+    mode that matters here;
+  * rung 3 needs an identified ancestor, which the wrapper below provides.
+
+  This is the argument for the accessibility tree in miniature: the markup cannot
+  distinguish these two links, and the AX tree can.
+#}
+<div class="{{ cls(tenant.class_prefix, 'subwrap') }}" id="pnlProducts">
+  <table class="{{ cls(tenant.class_prefix, 'grid') }}" cellpadding="0" cellspacing="0" border="0"
+         summary="Linked products for this member">
+    <tr>
+      <th scope="col">Account</th>
+      <th scope="col">Product</th>
+      <th scope="col">Number</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+    {% for account in member.sub_accounts %}
+      <tr>
+        <td>{{ account.account_id }}</td>
+        <td>{{ account.kind }}</td>
+        <td>{{ account.masked_number }}</td>
+        <td align="right">{{ account.balance }}</td>
+        <td>{{ account.status }}</td>
+        <td>
+          <a href="{{ url_for('pane_account', tenant=tenant.tenant_id, member_id=member.member_id, account_id=account.account_id) }}"
+             target="_parent"
+             aria-label="{{ tenant.label_subaccount }} {{ account.account_id }}"
+             class="{{ cls(tenant.class_prefix, 'lnkacct') }}">{{ tenant.label_subaccount }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

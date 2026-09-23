@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}{{ tenant.label_search }}{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'sr') }}
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlSearch">
+    <h1 style="font-size:12px;margin:0 0 8px">{{ tenant.label_search }}</h1>
+
+    {% if error %}
+      <div class="{{ cls(tenant.class_prefix, 'err') }}" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('pane_results', tenant=tenant.tenant_id) }}">
+      <table class="{{ cls(tenant.class_prefix, 'srtbl') }}" cellpadding="3" cellspacing="0" border="0">
+        <tr>
+          <td><label for="{{ idof(f.member_id) }}">{{ tenant.label_member_id }}</label></td>
+          <td>
+            <input type="text" id="{{ idof(f.member_id) }}" name="{{ f.member_id }}"
+                   class="{{ cls(tenant.class_prefix, 'inpq') }}" size="18" value="{{ query }}">
+          </td>
+          <td>
+            <button type="submit" class="{{ cls(tenant.class_prefix, 'btnq') }}">{{ tenant.label_submit_search }}</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <p style="color:#555;margin-top:10px">
+      Seeded ids: M-10001 &hellip; M-10005. Try M-99999 for the not-found path.
+    </p>
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}

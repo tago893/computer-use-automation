@@ -1,0 +1,27 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}Action Required{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'in') }}
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlInterstitial">
+    {#
+      A surprise obstacle between the agent and its goal.
+
+      Two sources: the injected ``interstitial`` fault, and northgate's standing
+      privacy disclosure. Replay must classify a *recognized* interstitial as
+      Recoverable -- dismiss it, log that it did, carry on from the same step --
+      and an unrecognized one as a hard failure rather than clicking hopefully.
+    #}
+    <div class="{{ cls(tenant.class_prefix, 'note') }}" role="alertdialog"
+         aria-label="{{ heading }}" data-interstitial="{{ kind }}">
+      <h1 style="font-size:12px;margin:0 0 6px">{{ heading }}</h1>
+      <p style="margin:0">{{ body }}</p>
+    </div>
+
+    <form method="post" action="{{ url_for('pane_acknowledge', tenant=tenant.tenant_id) }}">
+      <input type="hidden" name="{{ f.continue_to }}" value="{{ continue_to }}">
+      <button type="submit" class="{{ cls(tenant.class_prefix, 'btnack') }}">Acknowledge and Continue</button>
+    </form>
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}

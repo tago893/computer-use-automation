@@ -1,0 +1,29 @@
+{#
+  A server-side failure.
+
+  Standalone rather than extending the shared base: error handlers fire on paths
+  where no tenant could be resolved, so this page must not depend on tenant
+  context to render.
+
+  Distinct from a business outcome by design -- it carries ``data-error`` and no
+  ``data-outcome``, so replay classifies it as a HardFailure with evidence rather
+  than as an answer. The detail string is a vendor-style opaque code that leaks no
+  internals, which is both realistic and correct for an error surface.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Error {{ code }}</title>
+  <style>
+    body { font: 11px Verdana, Geneva, sans-serif; margin: 0; background: #d9d9d9; color: #111; }
+    .err { background: #ffe9e9; border: 1px solid #c00; padding: 8px; margin: 12px; color: #900; }
+  </style>
+</head>
+<body>
+  <div class="err" role="alert" data-error="{{ code }}">
+    <h1 style="font-size:13px;margin:0 0 6px">Error {{ code }}</h1>
+    <p style="margin:0">{{ detail }}</p>
+  </div>
+</body>
+</html>

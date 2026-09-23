@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'rs') }}
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlResults">
+    <h1 style="font-size:12px;margin:0 0 8px">Search Results</h1>
+
+    {% if member is none %}
+      {#
+        The "no such member" business outcome.
+
+        Rendered as a normal answer with a stable machine-readable code, not as an
+        error page. Replay is expected to detect this and return
+        BusinessOutcome("MEMBER_NOT_FOUND") to its caller -- a successful
+        execution that reports a negative finding.
+      #}
+      <div class="{{ cls(tenant.class_prefix, 'note') }}" role="status" data-outcome="{{ outcome_code }}">
+        <strong>No such member.</strong>
+        No record matches {{ tenant.label_member_id }} &ldquo;{{ query }}&rdquo;.
+        Reference code {{ outcome_code }}.
+      </div>
+      <p><a href="{{ url_for('pane_search', tenant=tenant.tenant_id) }}">Back to {{ tenant.label_search }}</a></p>
+    {% else %}
+      <table class="{{ cls(tenant.class_prefix, 'grid') }}" cellpadding="0" cellspacing="0" border="0"
+             summary="Members matching the search">
+        <tr>
+          <th scope="col">{{ tenant.label_member_id }}</th>
+          <th scope="col">Name</th>
+          <th scope="col">City</th>
+          <th scope="col">State</th>
+          <th scope="col">Standing</th>
+          <th scope="col">&nbsp;</th>
+        </tr>
+        <tr>
+          <td>{{ member.member_id }}</td>
+          <td>{{ member.full_name }}</td>
+          <td>{{ member.city }}</td>
+          <td>{{ member.state }}</td>
+          <td>{{ member.standing }}</td>
+          <td>
+            <a href="{{ url_for('pane_member', tenant=tenant.tenant_id, member_id=member.member_id) }}"
+               class="{{ cls(tenant.class_prefix, 'lnkopen') }}">Open Member</a>
+          </td>
+        </tr>
+      </table>
+    {% endif %}
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}

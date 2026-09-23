@@ -1,0 +1,31 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}Account {{ account.account_id }}{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'ac') }}
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlAccount">
+    <h1 style="font-size:12px;margin:0 0 8px">Sub-Account Detail</h1>
+
+    <table class="{{ cls(tenant.class_prefix, 'grid') }}" cellpadding="0" cellspacing="0" border="0"
+           summary="Sub-account detail">
+      <tr><th scope="row">Account</th><td>{{ account.account_id }}</td></tr>
+      <tr><th scope="row">Product</th><td>{{ account.kind }}</td></tr>
+      <tr><th scope="row">Number</th><td>{{ account.masked_number }}</td></tr>
+      <tr><th scope="row">Balance</th><td>{{ account.balance }}</td></tr>
+      <tr><th scope="row">Status</th><td>{{ account.status }}</td></tr>
+      <tr><th scope="row">Holder</th><td>{{ member.full_name }} ({{ member.member_id }})</td></tr>
+    </table>
+
+    {#
+      The one irreversible action on the surface. Phase 6 classifies this step
+      risk_class=RISKY: unattended replay refuses it unless the artifact is
+      approved, and otherwise escalates to a human.
+    #}
+    <form method="post" action="{{ url_for('pane_confirm', tenant=tenant.tenant_id) }}" style="margin-top:10px">
+      <input type="hidden" name="{{ f.member_id_hidden }}" value="{{ member.member_id }}">
+      <input type="hidden" name="{{ f.account_id_hidden }}" value="{{ account.account_id }}">
+      <button type="submit" class="{{ cls(tenant.class_prefix, 'btnconf') }}">{{ tenant.label_confirm }}</button>
+    </form>
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}

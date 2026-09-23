@@ -1,0 +1,45 @@
+{% extends "_base.html" %}
+{% import "_nest.html" as nest with context %}
+{% block title %}{{ tenant.brand }} - Servicing Sign In{% endblock %}
+{% block content %}
+{{ nest.open(tenant, 'lg') }}
+  <div class="{{ cls(tenant.class_prefix, 'hdr') }}">{{ tenant.brand }} &mdash; Servicing Console</div>
+
+  <div class="{{ cls(tenant.class_prefix, 'panel') }}" id="pnlSignIn">
+    <h1 style="font-size:13px;margin:0 0 8px">Sign In</h1>
+
+    {% if expired %}
+      <div class="{{ cls(tenant.class_prefix, 'note') }}" role="status">
+        Your session ended due to inactivity. Sign in again to continue.
+      </div>
+    {% endif %}
+    {% if error %}
+      <div class="{{ cls(tenant.class_prefix, 'err') }}" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" autocomplete="off">
+      <table class="{{ cls(tenant.class_prefix, 'lgtbl') }}" cellpadding="3" cellspacing="0" border="0">
+        <tr>
+          <td><label for="{{ idof(f.login_user) }}">Operator ID</label></td>
+          <td><input type="text" id="{{ idof(f.login_user) }}" name="{{ f.login_user }}"
+                     class="{{ cls(tenant.class_prefix, 'inp1') }}" size="24"></td>
+        </tr>
+        <tr>
+          <td><label for="{{ idof(f.login_pass) }}">Passphrase</label></td>
+          <td><input type="password" id="{{ idof(f.login_pass) }}" name="{{ f.login_pass }}"
+                     class="{{ cls(tenant.class_prefix, 'inp2') }}" size="24"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button type="submit" class="{{ cls(tenant.class_prefix, 'btn1') }}">Sign In</button></td>
+        </tr>
+      </table>
+    </form>
+
+    <p style="color:#555;margin:10px 0 0">
+      Demo credentials (synthetic): <code>{{ tenant.username }}</code> /
+      <code>{{ tenant.password }}</code>
+    </p>
+  </div>
+{{ nest.close(tenant) }}
+{% endblock %}
